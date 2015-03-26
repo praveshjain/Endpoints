@@ -69,7 +69,7 @@ public class Greetings {
 	public static ObjectifyFactory factory() {
 		return ObjectifyService.factory();
 	}
-	
+
 	@ApiMethod(name = "clickButton", path = "Event", httpMethod = HttpMethod.POST)
 	public Event clickButton(@Named("button") String button, @Named("data") String data) {
 
@@ -81,6 +81,8 @@ public class Greetings {
 		// Get the Conference Id from the Key
 		final long eventId = eventKey.getId();
 
+		// Timestamp timeStamp = new Timestamp(new Date().getTime());
+		// Event event = new Event(eventId, button, data, timeStamp);
 		Event event = new Event(eventId, button, data);
 		ofy().save().entity(event).now();
 		return event;
