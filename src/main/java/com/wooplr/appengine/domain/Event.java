@@ -22,16 +22,7 @@ public class Event {
     @Id private long id;
 	String buttonName;
 	String data;
-//	Timestamp timeStamp;
 	Date date;
-	
-//	public Event(long id, String buttonName, String data, Timestamp timeStamp){
-//		
-//		this.id = id;
-//		this.buttonName = buttonName;
-//		this.data = data;
-//		this.timeStamp = timeStamp;
-//	}
 	
 public Event(long id, String buttonName, String data){
 		
@@ -52,10 +43,6 @@ public Event(long id, String buttonName, String data){
 	public String getData() {
 		return data;
 	}
-	
-//	public Timestamp getTimeStamp(){
-//		return timeStamp;
-//	}
 	
 	public Date getDate(){
 		return date;
