@@ -15,24 +15,33 @@ import com.googlecode.objectify.annotation.Index;
 public class Event {
 
 	/**
-     * The id for the datastore key.
-     *
-     * We use automatic id assignment for entities of Conference class.
-     */
-    @Id private long id;
+	 * The id for the datastore key.
+	 *
+	 * We use automatic id assignment for entities of Conference class.
+	 */
+	@Id
+	private long id;
 	String buttonName;
 	String data;
 	Date date;
-	
-public Event(long id, String buttonName, String data){
-		
+
+	/*
+	 * An empty constructor is needed in order to successfully execute queries
+	 * to get Event
+	 */
+	private Event() {
+
+	}
+
+	public Event(long id, String buttonName, String data) {
+
 		this.id = id;
 		this.buttonName = buttonName;
 		this.data = data;
 		this.date = new Date();
 	}
-	
-	public long getId(){
+
+	public long getId() {
 		return id;
 	}
 
@@ -43,8 +52,8 @@ public Event(long id, String buttonName, String data){
 	public String getData() {
 		return data;
 	}
-	
-	public Date getDate(){
+
+	public Date getDate() {
 		return date;
 	}
 }
