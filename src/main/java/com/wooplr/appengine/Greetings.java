@@ -19,6 +19,38 @@ import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.cmd.Query;
 import com.wooplr.appengine.domain.Event;
 
+
+/*
+ * A class to keep track on number of counts of an Event.
+ */
+class Count{
+	
+	String buttonName;
+	int count;
+	
+	public Count(String buttonName, int count){
+		this.buttonName = buttonName;
+		this.count = count;
+	}
+
+	public String getButtonName() {
+		return buttonName;
+	}
+
+	public void setButtonName(String buttonName) {
+		this.buttonName = buttonName;
+	}
+
+	public int getCount() {
+		return count;
+	}
+
+	public void setCount(int count) {
+		this.count = count;
+	}
+}
+
+
 /**
  * Defines v1 of a helloworld API, which provides simple "greeting" methods.
  */
@@ -114,5 +146,24 @@ public class Greetings {
 		Query<Event> query = ofy().load().type(Event.class).order("date");
 		query = query.filter("date >", fromDate);
 		return query.list();
+	}
+
+	/**
+	 * A method to count the number of separate Events, based on the buttonName.
+	 * @return List<Count>
+	 */
+	@ApiMethod(name = "countEvents", path = "countEvents", httpMethod = HttpMethod.POST)
+	public List<Count> countEvents(){
+		
+		ofy().load().count();
+		Query<Event> query = ofy().load().type(Event.class);
+		int number1 = query.filter("buttonName =", "b1").count();
+		Count count1 = new Count("b1", number1);
+		int number2 = query.filter("buttonName =", "b2").count();
+		Count count2 = new Count("b2", number2);
+		List<Count> list = new ArrayList<Count>();
+		list.add(count1);
+		list.add(count2);
+		return list;
 	}
 }
