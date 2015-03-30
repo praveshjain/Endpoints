@@ -1,4 +1,4 @@
-package com.wooplr.appengine;
+package com.wooplr.appengine.api;
 
 import static com.wooplr.appengine.service.OfyService.ofy;
 
@@ -11,24 +11,22 @@ import javax.inject.Named;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiMethod.HttpMethod;
-import com.google.api.server.spi.response.NotFoundException;
-import com.google.appengine.api.users.User;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.ObjectifyFactory;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.cmd.Query;
+import com.wooplr.appengine.Constants;
 import com.wooplr.appengine.domain.Event;
-
 
 /*
  * A class to keep track on number of counts of an Event.
  */
-class Count{
-	
+class Count {
+
 	String buttonName;
 	int count;
-	
-	public Count(String buttonName, int count){
+
+	public Count(String buttonName, int count) {
 		this.buttonName = buttonName;
 		this.count = count;
 	}
@@ -50,51 +48,12 @@ class Count{
 	}
 }
 
-
 /**
  * Defines v1 of a helloworld API, which provides simple "greeting" methods.
  */
 @Api(name = "helloworld", version = "v1", scopes = { Constants.EMAIL_SCOPE }, clientIds = { Constants.WEB_CLIENT_ID,
         Constants.ANDROID_CLIENT_ID, Constants.IOS_CLIENT_ID }, audiences = { Constants.ANDROID_AUDIENCE })
 public class Greetings {
-
-	public static ArrayList<HelloGreeting> greetings = new ArrayList<HelloGreeting>();
-
-	static {
-		greetings.add(new HelloGreeting("Hello World!"));
-		greetings.add(new HelloGreeting("Goodbye World!"));
-		greetings.add(new HelloGreeting("Good Morning"));
-	}
-
-	@ApiMethod(name = "getGreeting", httpMethod = "get")
-	public HelloGreeting getGreeting(@Named("id") Integer id) throws NotFoundException {
-		try {
-			return greetings.get(id);
-		} catch (IndexOutOfBoundsException e) {
-			throw new NotFoundException("Greeting not found with an index: " + id);
-		}
-	}
-
-	public ArrayList<HelloGreeting> listGreeting() {
-		return greetings;
-	}
-
-	@ApiMethod(name = "greetings.multiply", httpMethod = "post")
-	public HelloGreeting insertGreeting(@Named("times") Integer times, HelloGreeting greeting) {
-		HelloGreeting response = new HelloGreeting();
-		StringBuilder responseBuilder = new StringBuilder();
-		for (int i = 0; i < times; i++) {
-			responseBuilder.append(greeting.getMessage());
-		}
-		response.setMessage(responseBuilder.toString());
-		return response;
-	}
-
-	@ApiMethod(name = "greetings.authed", path = "hellogreeting/authed")
-	public HelloGreeting authedGreeting(User user) {
-		HelloGreeting response = new HelloGreeting("hello " + user.getEmail());
-		return response;
-	}
 
 	/**
 	 * Use this static method for getting the Objectify service factory.
@@ -108,8 +67,10 @@ public class Greetings {
 	/**
 	 * A method to create an Event.
 	 * 
-	 * @param button is the name of the button pressed
-	 * @param data is the data to be stored along with that button. 
+	 * @param button
+	 *            is the name of the button pressed
+	 * @param data
+	 *            is the data to be stored along with that button.
 	 */
 	@ApiMethod(name = "clickButton", path = "Event", httpMethod = HttpMethod.POST)
 	public Event clickButton(@Named("button") String button, @Named("data") String data) {
@@ -135,14 +96,14 @@ public class Greetings {
 		Query<Event> query = ofy().load().type(Event.class).order("date");
 		return query.list();
 	}
-	
+
 	/**
-	 * Use this method to get Events after a particular date.
-	 * It takes an input date in the format 2015-03-27T15:32:40.016+05:30
+	 * Use this method to get Events after a particular date. It takes an input
+	 * date in the format 2015-03-27T15:32:40.016+05:30
 	 */
 	@ApiMethod(name = "getEventsInDuration", path = "getEventsInDuration", httpMethod = HttpMethod.POST)
-	public List<Event> getEventsInDuration(@Named("fromDate") Date fromDate){
-		
+	public List<Event> getEventsInDuration(@Named("fromDate") Date fromDate) {
+
 		Query<Event> query = ofy().load().type(Event.class).order("date");
 		query = query.filter("date >", fromDate);
 		return query.list();
@@ -150,20 +111,27 @@ public class Greetings {
 
 	/**
 	 * A method to count the number of separate Events, based on the buttonName.
+	 * 
 	 * @return List<Count>
 	 */
 	@ApiMethod(name = "countEvents", path = "countEvents", httpMethod = HttpMethod.POST)
-	public List<Count> countEvents(){
-		
+	public List<Count> countEvents() {
+
 		ofy().load().count();
 		Query<Event> query = ofy().load().type(Event.class);
 		int number1 = query.filter("buttonName =", "b1").count();
 		Count count1 = new Count("b1", number1);
 		int number2 = query.filter("buttonName =", "b2").count();
 		Count count2 = new Count("b2", number2);
+		int number3 = query.filter("buttonName =", "b3").count();
+		Count count3 = new Count("b3", number3);
+		int number4 = query.filter("buttonName =", "b4").count();
+		Count count4 = new Count("b4", number4);
 		List<Count> list = new ArrayList<Count>();
 		list.add(count1);
 		list.add(count2);
+		list.add(count3);
+		list.add(count4);
 		return list;
 	}
 }
