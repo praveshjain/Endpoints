@@ -1,3 +1,4 @@
+<%@ page import="com.wooplr.appengine.api.Greetings" %>
 
 /**
  * @fileoverview
@@ -145,32 +146,41 @@ google.devrel.samples.hello.authedGreeting = function(id) {
       });
 };
 
+google.devrel.samples.hello.clickButton = function(buttonName, data) {
+	gapi.client.helloworld.clickButton({
+			'buttonName':buttonName, 
+			'data':data
+	    }).execute(function(resp) {
+	    	if(!resp.code) {
+	    		google.devrel.samples.hello.print(resp);
+	    	}
+	});
+};
+
 /**
  * Enables the button callbacks in the UI.
  */
 google.devrel.samples.hello.enableButtons = function() {
   document.getElementById('getGreeting').onclick = function() {
-    google.devrel.samples.hello.getGreeting(
-        document.getElementById('id').value);
+	
+    google.devrel.samples.hello.clickButton(
+        document.getElementById('getGreeting').value,'data');
   }
 
-  document.getElementById('listGreeting').onclick = function() {
+  document.getElementById('button2').onclick = function() {
     google.devrel.samples.hello.listGreeting();
   }
 
-  document.getElementById('multiplyGreetings').onclick = function() {
+  document.getElementById('button3').onclick = function() {
     google.devrel.samples.hello.multiplyGreeting(
         document.getElementById('greeting').value,
         document.getElementById('count').value);
   }
 
-  document.getElementById('authedGreeting').onclick = function() {
+  document.getElementById('button4').onclick = function() {
     google.devrel.samples.hello.authedGreeting();
   }
   
-  document.getElementById('signinButton').onclick = function() {
-    google.devrel.samples.hello.auth();
-  }
 };
 
 /**
