@@ -1,9 +1,11 @@
 package com.wooplr.appengine.service;
 
-import com.wooplr.appengine.domain.Event;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyFactory;
 import com.googlecode.objectify.ObjectifyService;
+import com.wooplr.appengine.domain.CountsInDuration;
+import com.wooplr.appengine.domain.Event;
+import com.wooplr.appengine.domain.Counts;
 
 /**
  * Custom Objectify Service that this application should use.
@@ -14,6 +16,8 @@ public class OfyService {
      */
     static {
         factory().register(Event.class);
+        factory().register(Counts.class);
+        factory().register(CountsInDuration.class);
     }
 
     /**

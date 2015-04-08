@@ -29,7 +29,7 @@ public class Event {
 	 * An empty constructor is needed in order to successfully execute queries
 	 * to get Event
 	 */
-	private Event() {
+	public Event() {
 
 	}
 

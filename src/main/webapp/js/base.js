@@ -147,6 +147,7 @@ google.devrel.samples.hello.authedGreeting = function(id) {
 };
 
 google.devrel.samples.hello.clickButton = function(buttonName, data) {
+	console.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Reached here")
 	gapi.client.helloworld.clickButton({
 			'buttonName':buttonName, 
 			'data':data
